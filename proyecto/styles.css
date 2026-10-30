@@ -1,0 +1,19 @@
+/* Color institucional UTP */
+.bg-utp-red {
+  background-color: #E30613;
+}
+.text-utp-red {
+  color: #E30613;
+}
+.border-utp-red {
+  border-color: #E30613;
+}
+
+/* Ocultar barra de desplazamiento horizontal */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

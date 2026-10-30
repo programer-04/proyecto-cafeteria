@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cafetín UTP</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- Estilos Personalizados -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen w-full flex flex-col items-center justify-start m-0 p-0 overflow-x-hidden">
+
+  <!-- CONTENEDOR PRINCIPAL RESPONSIVO -->
+  <main class="w-full min-h-screen sm:max-w-md md:max-w-lg lg:max-w-xl bg-white shadow-xl flex flex-col relative border-x border-gray-100">
+
+    <!-- CONTENIDO DINÁMICO DE LA APLICACIÓN -->
+    <div class="flex-grow flex flex-col relative bg-gray-50 w-full">
+
+      <!-- PASO 1: LOGIN -->
+      <section id="step-1" class="step-page flex-grow flex flex-col justify-between p-6 sm:p-8 bg-white text-center">
+        <div class="mt-6">
+          <div class="w-20 h-20 bg-red-50 text-utp-red rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Cafetín UTP</h2>
+          <p class="text-sm text-gray-500 mt-1">Tu pedido, más rápido</p>
+        </div>
+
+        <div class="my-6 overflow-hidden rounded-2xl border border-gray-100 shadow-md">
+          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=600" alt="Cafetín UTP" class="w-full h-48 object-cover" />
+        </div>
+
+        <div class="space-y-4 mb-4">
+          <button onclick="goToStep(2)" class="w-full bg-utp-red hover:bg-red-700 text-white font-bold py-4 rounded-xl text-sm shadow-lg transition transform active:scale-95">
+            Iniciar sesión
+          </button>
+        </div>
+      </section>
+
+      <!-- PASO 2: MENÚ PRINCIPAL -->
+      <section id="step-2" class="step-page hidden flex-grow flex flex-col bg-gray-50">
+        <div class="p-4 bg-white shadow-sm border-b border-gray-100">
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-utensils text-utp-red text-xl"></i>
+              <span class="font-bold text-gray-800 text-base">Cafetín UTP</span>
+            </div>
+            <button onclick="goToStep(4)" class="relative p-2 text-gray-700 hover:text-utp-red transition">
+              <i class="fa-solid fa-shopping-cart text-xl"></i>
+              <span id="cart-badge" class="absolute top-0 right-0 bg-utp-red text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
+            </button>
+          </div>
+          
+          <h3 class="text-lg font-extrabold text-gray-900">¡Hola, Bienvenido!</h3>
+          <p class="text-xs text-gray-500 mb-3">¿Qué te gustaría pedir hoy?</p>
+
+          <div class="relative mb-3">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-xs"></i>
+            <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Buscar productos..." class="w-full bg-gray-100 rounded-xl pl-9 pr-4 py-2.5 text-xs focus:outline-none" />
+          </div>
+
+          <!-- BOTONES DE CATEGORÍA -->
+          <div class="flex space-x-2 overflow-x-auto no-scrollbar pb-1 text-xs">
+            <button id="btn-cat-todos" onclick="filterCategory('todos')" class="category-btn bg-utp-red text-white px-3.5 py-1.5 rounded-xl font-medium flex items-center space-x-1.5 shrink-0 shadow-sm transition">
+              <i class="fa-solid fa-border-all text-[10px]"></i><span>Todos</span>
+            </button>
+            <button id="btn-cat-bebidas" onclick="filterCategory('bebidas')" class="category-btn bg-gray-100 text-gray-600 px-3.5 py-1.5 rounded-xl font-medium flex items-center space-x-1.5 shrink-0 transition">
+              <i class="fa-solid fa-mug-hot text-[10px]"></i><span>Bebidas</span>
+            </button>
+            <button id="btn-cat-snacks" onclick="filterCategory('snacks')" class="category-btn bg-gray-100 text-gray-600 px-3.5 py-1.5 rounded-xl font-medium flex items-center space-x-1.5 shrink-0 transition">
+              <i class="fa-solid fa-cookie text-[10px]"></i><span>Snacks</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- LISTA DE PRODUCTOS (CON CONTADORES - Y +) -->
+        <div id="products-list" class="p-4 flex-grow overflow-y-auto space-y-3 pb-28">
+          <h4 id="category-title" class="text-xs font-bold text-gray-700 tracking-wider uppercase mb-1">Menú del día</h4>
+
+          <!-- Sándwich de pollo -->
+          <div data-category="snacks" data-name="Sándwich de pollo" onclick="openProductDetail('Sándwich de pollo', 7.00, 'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&q=80&w=600', 'Pan integral, pollo deshilachado, lechuga fresca, tomate en rodajas y salsa especial de la casa.')" class="product-card bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:border-utp-red transition">
+            <div class="flex items-center space-x-3">
+              <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&q=80&w=200" class="w-14 h-14 rounded-xl object-cover" />
+              <div>
+                <h5 class="product-title text-xs font-bold text-gray-800">Sándwich de pollo</h5>
+                <p class="text-xs font-bold text-gray-900 mt-0.5">S/ 7.00</p>
+                <span class="inline-block bg-green-100 text-green-700 text-[9px] px-2 py-0.5 rounded-full font-semibold mt-1">● Disponible</span>
+              </div>
+            </div>
+            
+            <!-- Selector de cantidad -->
+            <div class="flex items-center space-x-2 bg-gray-50 p-1 rounded-xl border border-gray-100" onclick="event.stopPropagation()">
+              <button onclick="changeQuantity(event, 'Sándwich de pollo', 7.00, 'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&q=80&w=200', -1)" class="w-7 h-7 rounded-lg bg-white text-gray-600 flex items-center justify-center text-xs font-bold shadow-xs hover:bg-gray-100 active:scale-90 transition">
+                <i class="fa-solid fa-minus text-[10px]"></i>
+              </button>
+              <span id="qty-Sándwich de pollo" class="text-xs font-extrabold text-gray-800 w-4 text-center">0</span>
+              <button onclick="changeQuantity(event, 'Sándwich de pollo', 7.00, 'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&q=80&w=200', 1)" class="w-7 h-7 rounded-lg bg-utp-red text-white flex items-center justify-center text-xs font-bold shadow-xs hover:bg-red-700 active:scale-90 transition">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Jugo de naranja -->
+          <div data-category="bebidas" data-name="Jugo de naranja" onclick="openProductDetail('Jugo de naranja', 2.00, 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&q=80&w=600', 'Jugo 100% natural exprimido al momento, refrescante y lleno de vitamina C.')" class="product-card bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:border-utp-red transition">
+            <div class="flex items-center space-x-3">
+              <img src="https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&q=80&w=200" class="w-14 h-14 rounded-xl object-cover" />
+              <div>
+                <h5 class="product-title text-xs font-bold text-gray-800">Jugo de naranja</h5>
+                <p class="text-xs font-bold text-gray-900 mt-0.5">S/ 2.00</p>
+                <span class="inline-block bg-green-100 text-green-700 text-[9px] px-2 py-0.5 rounded-full font-semibold mt-1">● Disponible</span>
+              </div>
+            </div>
+            
+            <!-- Selector de cantidad -->
+            <div class="flex items-center space-x-2 bg-gray-50 p-1 rounded-xl border border-gray-100" onclick="event.stopPropagation()">
+              <button onclick="changeQuantity(event, 'Jugo de naranja', 2.00, 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&q=80&w=200', -1)" class="w-7 h-7 rounded-lg bg-white text-gray-600 flex items-center justify-center text-xs font-bold shadow-xs hover:bg-gray-100 active:scale-90 transition">
+                <i class="fa-solid fa-minus text-[10px]"></i>
+              </button>
+              <span id="qty-Jugo de naranja" class="text-xs font-extrabold text-gray-800 w-4 text-center">0</span>
+              <button onclick="changeQuantity(event, 'Jugo de naranja', 2.00, 'https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&q=80&w=200', 1)" class="w-7 h-7 rounded-lg bg-utp-red text-white flex items-center justify-center text-xs font-bold shadow-xs hover:bg-red-700 active:scale-90 transition">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Café Americano -->
+          <div data-category="bebidas" data-name="Café Americano" onclick="openProductDetail('Café Americano', 3.50, 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=600', 'Café pasado caliente de grano seleccionado, ideal para empezar las clases con energía.')" class="product-card bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:border-utp-red transition">
+            <div class="flex items-center space-x-3">
+              <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=200" class="w-14 h-14 rounded-xl object-cover" />
+              <div>
+                <h5 class="product-title text-xs font-bold text-gray-800">Café Americano</h5>
+                <p class="text-xs font-bold text-gray-900 mt-0.5">S/ 3.50</p>
+                <span class="inline-block bg-green-100 text-green-700 text-[9px] px-2 py-0.5 rounded-full font-semibold mt-1">● Disponible</span>
+              </div>
+            </div>
+            
+            <!-- Selector de cantidad -->
+            <div class="flex items-center space-x-2 bg-gray-50 p-1 rounded-xl border border-gray-100" onclick="event.stopPropagation()">
+              <button onclick="changeQuantity(event, 'Café Americano', 3.50, 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=200', -1)" class="w-7 h-7 rounded-lg bg-white text-gray-600 flex items-center justify-center text-xs font-bold shadow-xs hover:bg-gray-100 active:scale-90 transition">
+                <i class="fa-solid fa-minus text-[10px]"></i>
+              </button>
+              <span id="qty-Café Americano" class="text-xs font-extrabold text-gray-800 w-4 text-center">0</span>
+              <button onclick="changeQuantity(event, 'Café Americano', 3.50, 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=200', 1)" class="w-7 h-7 rounded-lg bg-utp-red text-white flex items-center justify-center text-xs font-bold shadow-xs hover:bg-red-700 active:scale-90 transition">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+        
+        <!-- Chicha Morada -->
+          <div data-category="bebidas" data-name="Chicha Morada" onclick="openProductDetail('Chicha Morada', 0.80, 'https://hablacausa.com.pe/wp-content/uploads/2025/03/morada.jpg', 'Chicha morada es una bebida tradicional peruana hecha con frutas de color rojo oscuro y especias.')" class="product-card bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:border-utp-red transition">
+            <div class="flex items-center space-x-3">
+              <img src="https://hablacausa.com.pe/wp-content/uploads/2025/03/morada.jpg" class="w-14 h-14 rounded-xl object-cover" />
+              <div>
+                <h5 class="product-title text-xs font-bold text-gray-800">Chicha Morada</h5>
+                <p class="text-xs font-bold text-gray-900 mt-0.5">S/ 0.80</p>
+                <span class="inline-block bg-green-100 text-green-700 text-[9px] px-2 py-0.5 rounded-full font-semibold mt-1">● Disponible</span>
+              </div>
+            </div>
+            
+            <!-- Selector de cantidad -->
+            <div class="flex items-center space-x-2 bg-gray-50 p-1 rounded-xl border border-gray-100" onclick="event.stopPropagation()">
+              <button onclick="changeQuantity(event, 'Chicha Morada', 0.80, 'https://hablacausa.com.pe/wp-content/uploads/2025/03/morada.jpg', -1)" class="w-7 h-7 rounded-lg bg-white text-gray-600 flex items-center justify-center text-xs font-bold shadow-xs hover:bg-gray-100 active:scale-90 transition">
+                <i class="fa-solid fa-minus text-[10px]"></i>
+              </button>
+              <span id="qty-Chicha Morada" class="text-xs font-extrabold text-gray-800 w-4 text-center">0</span>
+              <button onclick="changeQuantity(event, 'Chicha Morada', 0.80, 'https://hablacausa.com.pe/wp-content/uploads/2025/03/morada.jpg', 1)" class="w-7 h-7 rounded-lg bg-utp-red text-white flex items-center justify-center text-xs font-bold shadow-xs hover:bg-red-700 active:scale-90 transition">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+            
+          <!-- Pizza -->
+          <div data-category="snacks" data-name="Pizza" onclick="openProductDetail('Pizza', 4.00, 'https://media.istockphoto.com/id/496546118/es/foto/retrato-de-la-cocina-cl%C3%A1sica-italiana-original-de-pizza-de-chorizo-aislado.jpg?s=612x612&w=0&k=20&c=9SYXuSH1-UObbKJuFnzJ2ul02OvZ_cww2KM98hA2Wrg=', 'Una deliciosa pizza con ingredientes frescos y saborosos.')" class="product-card bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:border-utp-red transition">
+            <div class="flex items-center space-x-3">
+              <img src="https://media.istockphoto.com/id/496546118/es/foto/retrato-de-la-cocina-cl%C3%A1sica-italiana-original-de-pizza-de-chorizo-aislado.jpg?s=612x612&w=0&k=20&c=9SYXuSH1-UObbKJuFnzJ2ul02OvZ_cww2KM98hA2Wrg=" class="w-14 h-14 rounded-xl object-cover" />
+              <div>
+                <h5 class="product-title text-xs font-bold text-gray-800">Pizza</h5>
+                <p class="text-xs font-bold text-gray-900 mt-0.5">S/ 4.00</p>
+                <span class="inline-block bg-green-100 text-green-700 text-[9px] px-2 py-0.5 rounded-full font-semibold mt-1">● Disponible</span>
+              </div>
+            </div>
+            
+            <!-- Selector de cantidad -->
+            <div class="flex items-center space-x-2 bg-gray-50 p-1 rounded-xl border border-gray-100" onclick="event.stopPropagation()">
+              <button onclick="changeQuantity(event, 'Pizza', 4.00, 'https://media.istockphoto.com/id/496546118/es/foto/retrato-de-la-cocina-cl%C3%A1sica-italiana-original-de-pizza-de-chorizo-aislado.jpg?s=612x612&w=0&k=20&c=9SYXuSH1-UObbKJuFnzJ2ul02OvZ_cww2KM98hA2Wrg=', -1)" class="w-7 h-7 rounded-lg bg-white text-gray-600 flex items-center justify-center text-xs font-bold shadow-xs hover:bg-gray-100 active:scale-90 transition">
+                <i class="fa-solid fa-minus text-[10px]"></i>
+              </button>
+              <span id="qty-Pizza" class="text-xs font-extrabold text-gray-800 w-4 text-center">0</span>
+              <button onclick="changeQuantity(event, 'Pizza', 4.00, 'https://media.istockphoto.com/id/496546118/es/foto/retrato-de-la-cocina-cl%C3%A1sica-italiana-original-de-pizza-de-chorizo-aislado.jpg?s=612x612&w=0&k=20&c=9SYXuSH1-UObbKJuFnzJ2ul02OvZ_cww2KM98hA2Wrg=', 1)" class="w-7 h-7 rounded-lg bg-utp-red text-white flex items-center justify-center text-xs font-bold shadow-xs hover:bg-red-700 active:scale-90 transition">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+
+           <div data-category="snacks" data-name="Hamburguesa" onclick="openProductDetail('Hamburguesa', 9.00, 'https://media.istockphoto.com/id/182744943/es/foto/hamburguesa.jpg?s=612x612&w=0&k=20&c=vIQOmuJ_ghLLBpFJIrX44OsfoM3WZgq4Q4VdwJRIGd4=', 'Una deliciosa hamburguesa con ingredientes frescos y saborosos.')" class="product-card bg-white p-3.5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:border-utp-red transition">
+            <div class="flex items-center space-x-3">
+              <img src="https://media.istockphoto.com/id/182744943/es/foto/hamburguesa.jpg?s=612x612&w=0&k=20&c=vIQOmuJ_ghLLBpFJIrX44OsfoM3WZgq4Q4VdwJRIGd4=" class="w-14 h-14 rounded-xl object-cover" />
+              <div>
+                <h5 class="product-title text-xs font-bold text-gray-800">Hamburguesa</h5>
+                <p class="text-xs font-bold text-gray-900 mt-0.5">S/ 9.00</p>
+                <span class="inline-block bg-green-100 text-green-700 text-[9px] px-2 py-0.5 rounded-full font-semibold mt-1">● Disponible</span>
+              </div>
+            </div>
+            
+            <!-- Selector de cantidad -->
+            <div class="flex items-center space-x-2 bg-gray-50 p-1 rounded-xl border border-gray-100" onclick="event.stopPropagation()">
+              <button onclick="changeQuantity(event, 'Hamburguesa', 9.00, 'https://media.istockphoto.com/id/182744943/es/foto/hamburguesa.jpg?s=612x612&w=0&k=20&c=vIQOmuJ_ghLLBpFJIrX44OsfoM3WZgq4Q4VdwJRIGd4=', -1)" class="w-7 h-7 rounded-lg bg-white text-gray-600 flex items-center justify-center text-xs font-bold shadow-xs hover:bg-gray-100 active:scale-90 transition">
+                <i class="fa-solid fa-minus text-[10px]"></i>
+              </button>
+              <span id="qty-Hamburguesa" class="text-xs font-extrabold text-gray-800 w-4 text-center">0</span>
+              <button onclick="changeQuantity(event, 'Hamburguesa', 9.00, 'https://media.istockphoto.com/id/182744943/es/foto/hamburguesa.jpg?s=612x612&w=0&k=20&c=vIQOmuJ_ghLLBpFJIrX44OsfoM3WZgq4Q4VdwJRIGd4=', 1)" class="w-7 h-7 rounded-lg bg-utp-red text-white flex items-center justify-center text-xs font-bold shadow-xs hover:bg-red-700 active:scale-90 transition">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+
+          </div>
+
+        <!-- BARRA INFERIOR CON BOTÓN FLOTANTE DE CARRITO -->
+        <div class="fixed bottom-0 w-full max-w-md md:max-w-lg lg:max-w-xl z-20 bg-white border-t border-gray-200">
+          <div id="floating-cart-btn" class="hidden px-4 pt-3 pb-1">
+            <button onclick="goToStep(4)" class="w-full bg-utp-red text-white py-3.5 px-4 rounded-xl text-xs font-bold flex items-center justify-between shadow-lg active:scale-95 transition">
+              <div class="flex items-center space-x-2">
+                <span id="floating-cart-count" class="bg-white text-utp-red text-[11px] font-extrabold px-2 py-0.5 rounded-full">0</span>
+                <span>Ir al carrito</span>
+              </div>
+              <span id="floating-cart-total" class="font-extrabold">S/ 0.00</span>
+            </button>
+          </div>
+
+          <div class="py-3 px-8 flex justify-between items-center text-xs text-gray-400">
+            <button onclick="goToStep(2)" class="flex flex-col items-center text-utp-red font-bold"><i class="fa-solid fa-house text-base"></i><span class="text-[10px] mt-0.5">Inicio</span></button>
+            <button onclick="goToStep(7)" class="flex flex-col items-center hover:text-gray-600"><i class="fa-solid fa-receipt text-base"></i><span class="text-[10px] mt-0.5">Pedidos</span></button>
+            <button onclick="goToStep(9)" class="flex flex-col items-center hover:text-gray-600"><i class="fa-solid fa-user text-base"></i><span class="text-[10px] mt-0.5">Perfil</span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASO 3: DETALLE DEL PRODUCTO (DINÁMICO) -->
+      <section id="step-3" class="step-page hidden flex-grow flex flex-col bg-white">
+        <div class="relative w-full h-56 bg-gray-50 flex items-center justify-center overflow-hidden">
+          <img id="detail-img" src="" class="w-full h-full object-contain p-4" />
+          <button onclick="goToStep(2)" class="absolute top-4 left-4 bg-white/90 w-8 h-8 rounded-full flex items-center justify-center text-gray-700 text-xs shadow-md"><i class="fa-solid fa-arrow-left"></i></button>
+        </div>
+
+        <div class="p-5 flex-grow flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 id="detail-title" class="text-lg font-extrabold text-gray-900">Nombre del producto</h3>
+                <p id="detail-price" class="text-base font-bold text-utp-red mt-0.5">S/ 0.00</p>
+              </div>
+              <span class="bg-green-100 text-green-700 text-[10px] px-2.5 py-1 rounded-full font-bold">● Disponible</span>
+            </div>
+
+            <p id="detail-desc" class="text-xs text-gray-500 mt-4 leading-relaxed">
+              Descripción del producto...
+            </p>
+          </div>
+
+          <button id="detail-add-btn" class="w-full bg-utp-red hover:bg-red-700 text-white py-4 rounded-xl text-xs font-bold shadow-lg flex items-center justify-center space-x-2 transition mt-6">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>Agregar al carrito</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- PASO 4: CARRITO -->
+      <section id="step-4" class="step-page hidden flex-grow flex flex-col bg-gray-50">
+        <div class="p-4 bg-white border-b border-gray-100 flex items-center">
+          <button onclick="goToStep(2)" class="text-gray-600 p-1"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-bold text-sm text-gray-800 flex-grow text-center pr-6">Mi carrito</h3>
+        </div>
+
+        <div id="cart-items-list" class="p-4 flex-grow overflow-y-auto space-y-3">
+        </div>
+
+        <div class="bg-white p-5 border-t border-gray-200 space-y-2">
+          <div class="flex justify-between text-xs text-gray-500"><span>Subtotal</span><span id="cart-subtotal">S/ 0.00</span></div>
+          <div class="flex justify-between text-xs text-gray-500"><span>IGV (18%)</span><span id="cart-igv">S/ 0.00</span></div>
+          <div class="flex justify-between text-sm font-extrabold text-gray-900 pt-2 border-t border-gray-100">
+            <span>Total</span><span id="cart-total" class="text-utp-red">S/ 0.00</span>
+          </div>
+          <button onclick="goToStep(5)" class="w-full bg-utp-red text-white py-4 rounded-xl text-xs font-bold shadow-lg mt-2">Continuar al pago</button>
+        </div>
+      </section>
+
+      <!-- PASO 5: CONFIRMACIÓN -->
+      <section id="step-5" class="step-page hidden flex-grow flex flex-col bg-gray-50">
+        <div class="p-4 bg-white border-b border-gray-100 flex items-center">
+          <button onclick="goToStep(4)" class="text-gray-600 p-1"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-bold text-sm text-gray-800 flex-grow text-center pr-6">Confirmar pedido</h3>
+        </div>
+
+        <div class="p-4 flex-grow overflow-y-auto space-y-4">
+          <div class="bg-red-50/60 border-2 border-utp-red p-3.5 rounded-2xl flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 bg-utp-red/10 text-utp-red rounded-xl flex items-center justify-center text-sm"><i class="fa-solid fa-store"></i></div>
+              <div>
+                <h5 class="text-xs font-bold text-gray-800">Recojo en el cafetín</h5>
+                <p class="text-[10px] text-gray-500">Recibirás notificación cuando esté listo.</p>
+              </div>
+            </div>
+            <i class="fa-solid fa-circle-dot text-utp-red text-sm"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 border-t border-gray-200 space-y-2">
+          <div class="flex justify-between text-sm font-extrabold text-gray-900"><span>Total</span><span id="cart-checkout-total" class="text-utp-red">S/ 0.00</span></div>
+          <button onclick="goToStep(6)" class="w-full bg-utp-red text-white py-4 rounded-xl text-xs font-bold shadow-lg mt-2">Realizar pedido</button>
+        </div>
+      </section>
+
+      <!-- PASO 6: MÉTODO DE PAGO -->
+      <section id="step-6" class="step-page hidden flex-grow flex flex-col bg-gray-50">
+        <div class="p-4 bg-white border-b border-gray-100 flex items-center">
+          <button onclick="goToStep(5)" class="text-gray-600 p-1"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-bold text-sm text-gray-800 flex-grow text-center pr-6">Método de pago</h3>
+        </div>
+
+        <div class="p-4 flex-grow overflow-y-auto space-y-3">
+          <!-- Opción 1: Tarjeta -->
+          <div onclick="selectPayment(this)" class="payment-option bg-red-50/60 border-2 border-utp-red p-3.5 rounded-2xl flex items-center justify-between cursor-pointer transition">
+            <div class="flex items-center space-x-3">
+              <i class="fa-solid fa-circle-dot text-utp-red text-sm radio-icon"></i>
+              <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center border"><i class="fa-solid fa-credit-card text-slate-700 text-sm"></i></div>
+              <h5 class="text-xs font-bold text-gray-800">Tarjeta de crédito / débito</h5>
+            </div>
+          </div>
+
+          <!-- Opción 2: Yape -->
+          <div onclick="selectPayment(this)" class="payment-option bg-white border border-gray-200 p-3.5 rounded-2xl flex items-center justify-between cursor-pointer hover:border-utp-red transition">
+            <div class="flex items-center space-x-3">
+              <i class="fa-regular fa-circle text-gray-300 text-sm radio-icon"></i>
+              <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center border border-purple-100 overflow-hidden p-1 shadow-xs">
+                <img src="https://images.seeklogo.com/logo-png/39/2/yape-app-logo-png_seeklogo-399697.png" alt="Yape" class="w-full h-full object-contain" />
+              </div>
+              <h5 class="text-xs font-bold text-gray-800">Yape</h5>
+            </div>
+          </div>
+
+          <!-- Opción 3: Plin -->
+          <div onclick="selectPayment(this)" class="payment-option bg-white border border-gray-200 p-3.5 rounded-2xl flex items-center justify-between cursor-pointer hover:border-utp-red transition">
+            <div class="flex items-center space-x-3">
+              <i class="fa-regular fa-circle text-gray-300 text-sm radio-icon"></i>
+              <div class="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center border border-cyan-100 overflow-hidden p-1 shadow-xs">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkdVD0_E3M6zZaqcVQEJWCBdH7ypkpiQjfB2Va1Lj12PhLUR8t944XehQ&s=10" alt="Plin" class="w-full h-full object-contain" />
+              </div>
+              <h5 class="text-xs font-bold text-gray-800">Plin</h5>
+            </div>
+          </div>
+
+          <!-- Opción 4: Efectivo -->
+          <div onclick="selectPayment(this)" class="payment-option bg-white border border-gray-200 p-3.5 rounded-2xl flex items-center justify-between cursor-pointer hover:border-utp-red transition">
+            <div class="flex items-center space-x-3">
+              <i class="fa-regular fa-circle text-gray-300 text-sm radio-icon"></i>
+              <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center border border-green-100 overflow-hidden p-1 shadow-xs">
+                <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" alt="Efectivo" class="w-full h-full object-contain" />
+              </div>
+              <h5 class="text-xs font-bold text-gray-800">Efectivo en caja</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 border-t border-gray-200 space-y-3">
+          <button onclick="goToStep(7)" class="w-full bg-utp-red text-white py-4 rounded-xl text-xs font-bold shadow-lg">Pagar ahora</button>
+        </div>
+      </section>
+
+      <!-- PASO 7: SEGUIMIENTO -->
+      <section id="step-7" class="step-page hidden flex-grow flex flex-col bg-gray-50">
+        <div class="p-4 bg-white border-b border-gray-100 flex items-center space-x-3">
+          <button onclick="goToStep(2)" class="text-gray-600"><i class="fa-solid fa-arrow-left"></i></button>
+          <div><h3 class="font-bold text-xs text-gray-800">Tu pedido #UTP-4587</h3></div>
+        </div>
+
+        <div class="p-5 flex-grow overflow-y-auto space-y-5">
+          <div class="relative pl-7 space-y-6 before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-200">
+            <div class="relative"><div class="absolute -left-7 top-0.5 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div><h5 class="text-xs font-bold text-gray-800">Pedido recibido</h5></div>
+            <div class="relative"><div class="absolute -left-7 top-0.5 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div><h5 class="text-xs font-bold text-gray-800">En preparación</h5></div>
+            <div class="relative"><div class="absolute -left-7 top-0.5 w-6 h-6 bg-utp-red text-white rounded-full flex items-center justify-center text-xs"><i class="fa-solid fa-spinner animate-spin"></i></div><h5 class="text-xs font-bold text-utp-red">Listo para recojo</h5></div>
+          </div>
+          <button onclick="goToStep(8)" class="w-full bg-utp-red text-white py-4 rounded-xl text-xs font-bold mt-4 shadow-md">Ver Código QR</button>
+        </div>
+      </section>
+
+      <!-- PASO 8: NOTIFICACIÓN / CÓDIGO QR -->
+      <section id="step-8" class="step-page hidden flex-grow flex flex-col justify-between p-6 bg-white text-center">
+        <div class="mt-4 flex flex-col items-center flex-grow justify-center">
+          <div class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center text-2xl mb-3 shadow-xs">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h3 class="text-base font-bold text-gray-900">¡Tu pedido está listo!</h3>
+          <p class="text-[11px] text-gray-500 mt-1 max-w-[220px]">Muéstralo en el cafetín para recoger.</p>
+
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 my-4 w-full max-w-[200px] flex flex-col items-center">
+            <span class="text-xs font-bold text-gray-800 tracking-wider mb-2">#UTP-4587</span>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=UTP-4587" class="w-24 h-24" />
+          </div>
+
+          <button onclick="goToStep(2)" class="w-full bg-utp-red text-white py-4 rounded-xl text-xs font-bold shadow-md">Volver al inicio</button>
+        </div>
+      </section>
+
+      <!-- PASO 9: PERFIL DEL ESTUDIANTE -->
+      <section id="step-9" class="step-page hidden flex-grow flex flex-col bg-gray-50">
+        <div class="p-4 bg-white border-b border-gray-100 flex items-center">
+          <button onclick="goToStep(2)" class="text-gray-600 p-1"><i class="fa-solid fa-arrow-left text-base"></i></button>
+          <h3 class="font-bold text-sm text-gray-800 flex-grow text-center pr-6">Perfil del Estudiante</h3>
+        </div>
+
+        <div class="p-5 flex-grow overflow-y-auto space-y-4 pb-20">
+          <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+            <div class="relative mb-3">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300" class="w-24 h-24 rounded-full object-cover border-4 border-utp-red shadow-md" />
+            </div>
+            <h4 class="text-base font-extrabold text-gray-900">Amalia Ramos</h4>
+            <p class="text-xs font-bold text-utp-red mt-0.5">Estudiante UTP</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm space-y-3.5">
+            <h5 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Información Académica</h5>
+
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 rounded-xl bg-red-50 text-utp-red flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-id-card"></i></div>
+              <div class="flex-grow">
+                <p class="text-[10px] text-gray-400 font-semibold">Código UTP</p>
+                <p class="text-xs font-bold text-gray-800">U202314582</p>
+              </div>
+            </div>
+
+            <hr class="border-gray-100" />
+
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 rounded-xl bg-red-50 text-utp-red flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-graduation-cap"></i></div>
+              <div class="flex-grow">
+                <p class="text-[10px] text-gray-400 font-semibold">Carrera</p>
+                <p class="text-xs font-bold text-gray-800">Ingeniería de Sistemas e Informática</p>
+              </div>
+            </div>
+
+            <hr class="border-gray-100" />
+
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 rounded-xl bg-red-50 text-utp-red flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-laptop-code"></i></div>
+              <div class="flex-grow">
+                <p class="text-[10px] text-gray-400 font-semibold">Modalidad</p>
+                <p class="text-xs font-bold text-gray-800">Presencial</p>
+              </div>
+            </div>
+
+            <hr class="border-gray-100" />
+
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 rounded-xl bg-red-50 text-utp-red flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-building-columns"></i></div>
+              <div class="flex-grow">
+                <p class="text-[10px] text-gray-400 font-semibold">Campus</p>
+                <p class="text-xs font-bold text-gray-800">Chimbote</p>
+              </div>
+            </div>
+
+            <hr class="border-gray-100" />
+
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 rounded-xl bg-red-50 text-utp-red flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-envelope"></i></div>
+              <div class="flex-grow">
+                <p class="text-[10px] text-gray-400 font-semibold">Correo institucional UTP</p>
+                <p class="text-xs font-bold text-gray-800">u202314582@utp.edu.pe</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTÓN CERRAR SESIÓN -->
+          <button onclick="goToStep(1)" class="w-full bg-red-50 hover:bg-red-100 text-utp-red border border-red-100 font-bold py-3.5 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow-xs active:scale-95 mt-3">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Cerrar sesión</span>
+          </button>
+        </div>
+
+        <div class="bg-white border-t border-gray-200 py-3 px-8 flex justify-between items-center text-xs text-gray-400 fixed bottom-0 w-full max-w-md md:max-w-lg lg:max-w-xl z-20">
+          <button onclick="goToStep(2)" class="flex flex-col items-center hover:text-gray-600"><i class="fa-solid fa-house text-base"></i><span class="text-[10px] mt-0.5">Inicio</span></button>
+          <button onclick="goToStep(7)" class="flex flex-col items-center hover:text-gray-600"><i class="fa-solid fa-receipt text-base"></i><span class="text-[10px] mt-0.5">Pedidos</span></button>
+          <button onclick="goToStep(9)" class="flex flex-col items-center text-utp-red font-bold"><i class="fa-solid fa-user text-base"></i><span class="text-[10px] mt-0.5">Perfil</span></button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
